@@ -1,0 +1,27 @@
+{
+  "name": "solvent",
+  "version": "0.0.1",
+  "description": "A calculator with equations and variables",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrejewski/solvent.git"
+  },
+  "keywords": [
+    "calculator",
+    "variables",
+    "equations"
+  ],
+  "author": "Chris Andrejewski <christopher.andrejewski@gmail.com> (chrisandrejewski.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrejewski/solvent/issues"
+  },
+  "homepage": "https://github.com/andrejewski/solvent#readme",
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}
