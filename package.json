@@ -23,5 +23,8 @@
   "homepage": "https://github.com/andrejewski/solvent#readme",
   "devDependencies": {
     "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "nearley": "^2.4.0"
   }
 }
