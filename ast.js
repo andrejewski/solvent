@@ -1,11 +1,15 @@
 
 function Node(type) {
-  return function _Node(left, right, attrs) {
-    return Object.assign(attrs || {}, {
+  return function _Node(nodes, attrs) {
+    if(!(Array.isArray(nodes) && nodes.length)) {
+      var msg = 'Node "'+type+'" needs an array of at least one subnode.';
+      throw new Error(msg);
+    }
+    return {
       type: type,
-      left: left,
-      right: right,
-    });
+      nodes: nodes,
+      attrs: attrs,
+    };
   }
 }
 
@@ -14,17 +18,17 @@ function capitalize(str) {
 }
 
 var types = [
-  'number',
-  'variable',
-  'function',
-  'negation',
-  'addition',
-  'subtraction',
+  'assignment',
+  'exponentiation',
   'multiplication',
   'division',
-  'exponentiation',
+  'addition',
+  'subtraction',
+  'negation',
   'modulo',
-  'assignment',
+  'function',
+  'variable',
+  'number',
 ];
 
 var ast = types.reduce(function(obj, type) {

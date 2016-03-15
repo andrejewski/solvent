@@ -4,7 +4,8 @@
   "description": "A calculator with equations and variables",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "nearleyc math.ne > math.js"
   },
   "repository": {
     "type": "git",
