@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "build": "nearleyc math.ne > math.js"
+    "build": "nearleyc math.ne > math.js && browserify index.js -o dist/solvent.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/andrejewski/solvent#readme",
   "devDependencies": {
+    "browserify": "^13.0.0",
     "mocha": "^2.4.5"
   },
   "dependencies": {

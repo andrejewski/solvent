@@ -1,27 +1,6 @@
 
-global.window = null;
-
-var nearley = require('nearley');
-var grammar = require('./math');
-
-function parse(str) {
-  var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
-  var output = parser.feed(str).results;
-  var ast = clean(output);
-  console.log(JSON.stringify(ast, null, 2));
-  return ast;
-}
-
-function clean(ast) {
-  if(!(ast.length && ast[0].length)) return null;
-  function _clean(ast) {
-    while(Array.isArray(ast)) ast = ast[0];
-    if(typeof ast !== 'object') return ast;
-    ast.nodes = ast.nodes.map(_clean);
-    return ast;
-  }
-  return _clean(ast);
-}
+var parse = require('./parse');
+var compute = require('./compute');
 
 function symbolicSolveFor(left, right) {
   var result = {success: false}; 
@@ -59,7 +38,6 @@ function findNodes(tree, predicate) {
 }
 
 function solveFor(exp, variableName) {
-  if(typeof exp === 'string') exp = parse(exp);
   var equalities = findNode(exp, function(x) {
     return x.type === 'assignment';
   });
@@ -113,54 +91,6 @@ function solveFor(exp, variableName) {
   throw new Error(msg);
 }
 
-function reduceNodes(nodes, fn) {
-  return nodes.map(computeValue).reduce(fn);
-}
-
-function argumentNodes(nodes, fn) {
-  return fn.apply(null, nodes.map(computeValue));
-}
-
-function sum(x,y) {return x+y;}
-function difference(x,y) {return x-y;}
-function product(x,y) {return x*y;}
-function quotient(x,y) {return x/y;}
-function modulo(x,y) {return x%y;}
-function raise(x,y) {return Math.pow(x, y);}
-
-function computeValue(exp) {
-  switch(exp.type) {
-    case 'number':
-      return exp.nodes[0];
-    case 'assignment':
-      return computeValue(exp.nodes.slice(-1));
-    case 'negation':
-      return -computeValue(exp.nodes[0]);
-    case 'addition':
-      return reduceNodes(exp.nodes, sum);
-    case 'subtraction':
-      return reduceNodes(exp.nodes, difference);
-    case 'multiplication':
-      return reduceNodes(exp.nodes, product);
-    case 'division':
-      return reduceNodes(exp.nodes, quotient);
-    case 'modulo':
-      return reduceNodes(exp.nodes, modulo);
-    case 'exponentiation':
-      return reduceNodes(exp.nodes, raise);
-    case 'function':
-      return argumentNodes(exp.nodes.slice(1), exp.nodes[0]);
-    case 'variable':
-      var msg = 'Node type "variable" must be resolved before it can be computed.';
-      throw new Error(msg);
-      break;
-    default:
-      var msg = 'Node type "'+exp.type+'" not recognized for \n'+
-                JSON.stringify(exp);
-      throw new Error(msg);
-  }
-}
-
 function Context(expressions, constants) {
   return {
     expressions: expressions,
@@ -168,27 +98,16 @@ function Context(expressions, constants) {
   };
 }
 
-function defaultContext() {
-  return Context([], Math);
-}
-
-function populateUnknowns(expression, context) {
-  return expression;
-}
-
 function evaluate(expression, context) {
-  if(typeof expression === 'string') {
-    expression = parse(expression);
-  }
-  if(!context) context = defaultContext();
-
-  var expression = populateUnknowns(expression, context);
-  return computeValue(expression);
+  context = context || Context([], Math);
+  // populate variables and functions
+  return expression;
 }
 
 module.exports = {
   parse: parse,
   evaluate: evaluate,
+  compute: compute,
   solveFor: solveFor,
 };
 
