@@ -107,6 +107,7 @@ function evaluate(expression, context) {
 module.exports = {
   parse: parse,
   evaluate: evaluate,
+  Context: Context,
   compute: compute,
   solveFor: solveFor,
 };
