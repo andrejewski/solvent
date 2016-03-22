@@ -192,6 +192,7 @@ function evaluate(expression, context) {
 module.exports = {
   parse: parse,
   evaluate: evaluate,
+  Context: Context,
   compute: compute,
   solveFor: solveFor,
 };
@@ -202,7 +203,7 @@ module.exports = {
 // http://github.com/Hardmath123/nearley
 (function () {
 function id(x) {return x[0]; }
- var ast = window ? window.ast : require('./ast.js'); var grammar = {
+ var ast = typeof window !== 'undefined' ? window.ast : require('./ast.js'); var grammar = {
     ParserRules: [
     {"name": "main", "symbols": ["_", "EXP", "_"], "postprocess": function(d) { return d[1]; }},
     {"name": "_", "symbols": [], "postprocess": function(d) {return null;}},
@@ -539,10 +540,6 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 })();
 
 },{}],6:[function(require,module,exports){
-(function (global){
-
-// this is a hack because nearley exports bad
-global.window = null;
 
 var nearley = require('nearley');
 var grammar = require('./math');
@@ -569,5 +566,4 @@ function clean(ast) {
 module.exports = parse;
 
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./math":4,"nearley":5}]},{},[3]);

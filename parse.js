@@ -1,7 +1,4 @@
 
-// this is a hack because nearley exports bad
-global.window = null;
-
 var nearley = require('nearley');
 var grammar = require('./math');
 
