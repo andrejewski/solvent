@@ -6,7 +6,7 @@ function parse(str) {
   var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
   var output = parser.feed(str).results;
   var ast = clean(output);
-  console.log(JSON.stringify(ast, null, 2));
+  // console.log(JSON.stringify(ast, null, 2));
   return ast;
 }
 
